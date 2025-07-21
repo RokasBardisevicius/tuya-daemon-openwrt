@@ -1,0 +1,35 @@
+#!/bin/sh /etc/rc.common
+
+USE_PROCD=1
+
+start_service() {
+        local enabled product device secret daemon
+
+        config_load 'tuyad'
+        config_get enabled tuyad_sct enable '0'
+        config_get product tuyad_sct product
+        config_get device tuyad_sct device
+        config_get secret tuyad_sct secret
+        config_get daemon tuyad_sct daemon
+
+	if [ "$enabled" -eq 1 ]; then
+	        procd_open_instance
+	        procd_set_param command /usr/bin/tuyad 
+                procd_append_param command --product "$product"
+                procd_append_param command --device "$device"
+                procd_append_param command --secret "$secret"
+                procd_append_param command --daemon "$daemon"
+	        procd_set_param pidfile /var/run/tuyad.pid
+		procd_set_param file /etc/config/tuyad
+        	procd_close_instance
+	fi
+}
+
+service_triggers() {
+	procd_add_reload_trigger "tuyad"
+}
+
+reload_service() {
+	stop
+	start
+}
