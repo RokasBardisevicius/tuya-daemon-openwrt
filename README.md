@@ -28,7 +28,6 @@ make package/tuya_daemon/compile
 ```
 
 ## Install
-* .ipk files will be in bin/packages/arm_*/base/tuya_*.ipk or use find:
 ```bash
 # ipk's must be in bin/packages/arm_*/base/tuya_*.ipk or find packages
 find -name "tuya_*.ipk"
